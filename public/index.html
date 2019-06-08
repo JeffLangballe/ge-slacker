@@ -12,27 +12,97 @@
     <title>GE Slacker</title>
   </head>
   <body>
-    <div class="table-responsive">
-      <table class="table table-striped table-sm" id="items-table">
-        <thead>
-          <tr>
-            <th>id</th>
-            <th>Name</th>
-            <th>Average Price</th>
-            <th>Buy Price</th>
-            <th>Sell Price</th>
-            <th>Margin</th>
-            <th>ROI</th>
-            <th>Buy Quantity</th>
-            <th>Sell Quantity</th>
-            <th>Overall Quantity</th>
+    <!-- Modal -->
+    <div class="modal fade" id="filtersModal" tabindex="-1" role="dialog" aria-labelledby="filtersModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="filtersModalLabel">Filters</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
 
-          </tr>
-        </thead>
-        <tbody id="items-table-content">
-        </tbody>
-      </table>
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="price-min">Minimum Price</span>
+              </div>
+              <input type="text" class="form-control" aria-label="Minimum Price" aria-describedby="basic-addon1">
+            </div>
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="price-max">Maximum Price</span>
+              </div>
+              <input type="text" class="form-control" aria-label="Maximum Price" aria-describedby="basic-addon1">
+            </div>
+
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="quantity-min">Minimum Quantity</span>
+              </div>
+              <input type="text" class="form-control" aria-label="Minimum Quantity" aria-describedby="basic-addon1">
+            </div>
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="quantity-max">Maximum Quantity</span>
+              </div>
+              <input type="text" class="form-control" aria-label="Maximum Quantity" aria-describedby="basic-addon1">
+            </div>
+
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="margin-min">Minimum Margin</span>
+              </div>
+              <input type="text" class="form-control" aria-label="Minimum Margin" aria-describedby="basic-addon1">
+            </div>
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="margin-max">Maximum Margin</span>
+              </div>
+              <input type="text" class="form-control" aria-label="Maximum Margin" aria-describedby="basic-addon1">
+            </div>
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-danger">Reset</button>
+            <button type="button" class="btn btn-primary" data-dismiss="modal">Apply</button>
+          </div>
+        </div>
+      </div>
     </div>
+
+    <!-- Main container -->
+    <div class="container">
+      <!-- Button trigger modal -->
+      <button type="button" class="btn btn-primary float-right mb-1 mt-1" data-toggle="modal" data-target="#filtersModal">
+          Filters
+      </button>
+
+      <!-- Items table -->
+      <div class="table-responsive">
+        <table class="table table-striped table-sm" id="items-table">
+          <thead>
+            <tr>
+              <th>id</th>
+              <th>Name</th>
+              <th>Average Price</th>
+              <th>Buy Price</th>
+              <th>Sell Price</th>
+              <th>Margin</th>
+              <th>ROI</th>
+              <th>Buy Quantity</th>
+              <th>Sell Quantity</th>
+              <th>Overall Quantity</th>
+            </tr>
+          </thead>
+          <tbody id="items-table-content">
+          </tbody>
+        </table>
+      </div>
+    </div>
+
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
