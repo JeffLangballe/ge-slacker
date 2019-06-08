@@ -44,6 +44,7 @@ function margin(item) {
  * @return ROI (Return on investment) of item
  */
 function ROI(item) {
+  if (item.buy_average == 0) return 0;
   roi = margin(item) / item.buy_average * 100;
   if (Number.isNaN(roi)) roi = 0;
   return roi;
