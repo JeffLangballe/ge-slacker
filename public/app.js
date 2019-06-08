@@ -1,6 +1,7 @@
 const baseUrl = 'https://api.rsbuddy.com/grandExchange';
 const summaryUrl = `${window.location.origin}/api/exchange/summary.json`;
 let items = [];
+let table = null;
 
 /**
  * @name getAllItems
@@ -31,6 +32,24 @@ async function getAllItems() {
 }
 
 /**
+ * @name margin
+ * @return Price margin of item
+ */
+function margin(item) {
+  return item.buy_average - item.sell_average;
+}
+
+/**
+ * @name ROI
+ * @return ROI (Return on investment) of item
+ */
+function ROI(item) {
+  roi = margin(item) / item.buy_average * 100;
+  if (Number.isNaN(roi)) roi = 0;
+  return roi;
+}
+
+/**
  * @name template
  * @brief Generates html string for displaying items in table
  * @return Table html string
@@ -44,11 +63,11 @@ function template() {
     <td>${item.overall_average}</td>
     <td>${item.buy_average}</td>
     <td>${item.sell_average}</td>
-    <td>${item.overall_quantity}</td>
+    <td>${margin(item)}</td>
+    <td>${ROI(item).toFixed(1)}</td>
     <td>${item.buy_quantity}</td>
     <td>${item.sell_quantity}</td>
-    <td>${item.sp}</td>
-    <td>${item.members}</td>
+    <td>${item.overall_quantity}</td>
   </tr>`;
 
   return items.map(itemToEntry).join('');
@@ -59,9 +78,12 @@ function template() {
  * @brief Populates table with item price data
  */
 function render() {
-	let list = document.querySelector('#items-table');
+	let list = document.querySelector('#items-table-content');
 	if (!list) return;
-	list.innerHTML = template();
+  list.innerHTML = template();
+
+  // Use DataTable to handle row sorting and searching
+  table = $('#items-table').DataTable();  
 }
 
 window.onload = async function(){
