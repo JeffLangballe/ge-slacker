@@ -1,6 +1,6 @@
-const baseUrl = 'https://api.rsbuddy.com/grandExchange';
-const summaryUrl = `${window.location.origin}/api/exchange/summary.json`;
-let items = [];
+const baseUrl = `${window.location.origin}/api/grandExchange`;
+const summaryUrl = `${window.location.origin}/summary/exchange/summary.json`;
+let items = null;
 let table = null;
 
 /**
@@ -20,15 +20,9 @@ let table = null;
  * sp: 5
  */ 
 async function getAllItems() {
-  const res = await fetch(summaryUrl, { mode: 'no-cors' });
+  const res = await fetch(summaryUrl);
   const items = await res.json();
-  let ids = Object.keys(items);
-  let pushItemWithId = (list, id) => {
-    list.push(items[id]);
-    return list;
-  };
-  let itemList = ids.reduce(pushItemWithId, []);
-  return itemList;
+  return items;
 }
 
 /**
@@ -56,9 +50,9 @@ function ROI(item) {
  * @return Table html string
  */
 function template() {
-  if (!items || items.length == 0) return '';
+  if (!items) return '';
   let itemToEntry = item => `
-  <tr>
+  <tr onclick="selectItem(${item.id});">
     <td>${item.id}</td>
     <td>${item.name}</td>
     <td>${item.overall_average}</td>
@@ -71,7 +65,7 @@ function template() {
     <td>${item.overall_quantity}</td>
   </tr>`;
 
-  return items.map(itemToEntry).join('');
+  return Object.values(items).map(itemToEntry).join('');
 }
 
 /**
