@@ -77,6 +77,9 @@ function template() {
 /**
  * @name render
  * @brief Populates table with item price data
+ * 
+ * TODO: Use DataTable methods to update the table instead of recreating it
+ *       from scratch every time
  */
 function render() {
 	let list = document.querySelector('#items-table-content');
@@ -84,10 +87,48 @@ function render() {
   list.innerHTML = template();
 
   // Use DataTable to handle row sorting and searching
-  table = $('#items-table').DataTable();  
+  table = $('#items-table').DataTable();
+}
+
+/**
+ * @name getFilterMinMaxFunction
+ * @brief Generates a function to filter table using a min/max value
+ * @param dataColumn Column index (in table) of data to filter
+ * @param idMin HTML id of input for minimum value
+ * @param idMax HTML id of input for maximum value
+ * @return Function which reads min/max from specified HTML elements and filters
+ *         table accordingly
+ * 
+ * TODO: Make this more robust! Having to know the column index isn't very clean
+ */
+function getFilterMinMaxFunction (dataColumn, idMin, idMax) {
+  return function filterFunction (settings, data, dataIndex) {
+    var min = parseInt($(idMin).val(), 10);
+    var max = parseInt($(idMax).val(), 10);
+    var val = parseFloat( data[dataColumn] ) || 0;
+    if ((isNaN(min) && isNaN(max)) ||
+        (isNaN(min) && val <= max) ||
+        (min <= val && isNaN(max)) ||
+        (min <= val && val <= max))
+    {
+      return true;
+    }
+    return false;
+  }
 }
 
 window.onload = async function(){
+  // DataTable initialization
+  // TODO: Abstract this out elsewhere
+  $.fn.dataTable.ext.search.push(getFilterMinMaxFunction(2, '#price-min', '#price-max'));
+  $.fn.dataTable.ext.search.push(getFilterMinMaxFunction(5, '#margin-min', '#margin-max'));
+  $.fn.dataTable.ext.search.push(getFilterMinMaxFunction(9, '#quantity-min', '#quantity-max'));
+  // Event listener for range filtering inputs to redraw on input
+  $('#price-min, #price-max, #margin-min, #margin-max, #quantity-min, #quantity-max').keyup(function() {
+    if (table) table.draw();
+  });
+
+  // Get items and populate tables
   items = await getAllItems();
   console.log(items);
   render();

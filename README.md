@@ -1,12 +1,12 @@
 # ge-slacker
-GE Tracker Clone for OSRS
+Grand Exchange helper for OSRS
 
 Aims to replicate most of the key features from ge-tracker.com using the RSBuddy API and official API
 
 ## TODO
-- Skeleton for frontend
-- Simple reverse proxy to avoid CORS issues
-- Dynamically populated, sortable, filterable list of items
+- Cleanup UI
+- Code refactoring (looking at you DataTable)
+- Simple reverse proxy to avoid CORS issues*
 - Graphs for individual items
 - Front page dashboard (favourites, recommendations, graphs)
 - High volume item page with recommendations

@@ -12,7 +12,8 @@
     <title>GE Slacker</title>
   </head>
   <body>
-    <!-- Modal -->
+    <!-- Filter Modal -->
+    <!-- TODO: Use two-column style for this -->
     <div class="modal fade" id="filtersModal" tabindex="-1" role="dialog" aria-labelledby="filtersModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -26,41 +27,41 @@
 
             <div class="input-group mb-3">
               <div class="input-group-prepend">
-                <span class="input-group-text" id="price-min">Minimum Price</span>
+                <span class="input-group-text">Minimum Price</span>
               </div>
-              <input type="text" class="form-control" aria-label="Minimum Price" aria-describedby="basic-addon1">
+              <input type="text" class="form-control" aria-label="Minimum Price" aria-describedby="basic-addon1" id="price-min">
             </div>
             <div class="input-group mb-3">
               <div class="input-group-prepend">
-                <span class="input-group-text" id="price-max">Maximum Price</span>
+                <span class="input-group-text">Maximum Price</span>
               </div>
-              <input type="text" class="form-control" aria-label="Maximum Price" aria-describedby="basic-addon1">
-            </div>
-
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                <span class="input-group-text" id="quantity-min">Minimum Quantity</span>
-              </div>
-              <input type="text" class="form-control" aria-label="Minimum Quantity" aria-describedby="basic-addon1">
-            </div>
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                <span class="input-group-text" id="quantity-max">Maximum Quantity</span>
-              </div>
-              <input type="text" class="form-control" aria-label="Maximum Quantity" aria-describedby="basic-addon1">
+              <input type="text" class="form-control" aria-label="Maximum Price" aria-describedby="basic-addon1" id="price-max">
             </div>
 
             <div class="input-group mb-3">
               <div class="input-group-prepend">
-                <span class="input-group-text" id="margin-min">Minimum Margin</span>
+                <span class="input-group-text">Minimum Quantity</span>
               </div>
-              <input type="text" class="form-control" aria-label="Minimum Margin" aria-describedby="basic-addon1">
+              <input type="text" class="form-control" aria-label="Minimum Quantity" aria-describedby="basic-addon1" id="quantity-min">
             </div>
             <div class="input-group mb-3">
               <div class="input-group-prepend">
-                <span class="input-group-text" id="margin-max">Maximum Margin</span>
+                <span class="input-group-text">Maximum Quantity</span>
               </div>
-              <input type="text" class="form-control" aria-label="Maximum Margin" aria-describedby="basic-addon1">
+              <input type="text" class="form-control" aria-label="Maximum Quantity" aria-describedby="basic-addon1" id="quantity-max">
+            </div>
+
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text">Minimum Margin</span>
+              </div>
+              <input type="text" class="form-control" aria-label="Minimum Margin" aria-describedby="basic-addon1" id="margin-min">
+            </div>
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text">Maximum Margin</span>
+              </div>
+              <input type="text" class="form-control" aria-label="Maximum Margin" aria-describedby="basic-addon1" id="margin-max">
             </div>
 
           </div>
