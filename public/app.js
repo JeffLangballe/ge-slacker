@@ -1,7 +1,12 @@
-const baseUrl = `${window.location.origin}/api/grandExchange`;
-const summaryUrl = `${window.location.origin}/summary/exchange/summary.json`;
+const apiUrl = `${window.location.origin}/api`;
+const baseUrl = `${window.location.origin}/base`;
+const summaryUrl = `${baseUrl}/exchange/summary.json`;
+const graphUrl = `${apiUrl}/grandExchange`;
+const graphUrlAlt = `${baseUrl}/exchange/graphs`;
 let items = null;
+let selectedItem = null;
 let table = null;
+let graph = null;
 
 /**
  * @name getAllItems
@@ -23,6 +28,32 @@ async function getAllItems() {
   const res = await fetch(summaryUrl);
   const items = await res.json();
   return items;
+}
+
+/**
+ * @name getGraphData
+ * @brief Gets detailed price data over time for a specified item
+ * @param id  Item id 
+ * @param period Fetch data from this many minutes ago until current time
+ * @param interval Interval between timestamps in minutes
+ * @return List of price data for different times
+ * Each object in the list is of the form:
+ * buyingPrice: 160
+ * buyingQuantity: 149416
+ * overallPrice: 159
+ * overallQuantity: 632501
+ * sellingPrice: 159
+ * sellingQuantity: 483085
+ * ts: 1560011400000
+ */
+async function getGraphData(id, period, interval) {
+  let res = await fetch(`${graphUrl}/?a=graph&i=${id}&g=${period}`);
+
+  // Fallback API
+  if (!res.ok) res = await fetch(`${graphUrlAlt}/${interval}/${id}.json`);
+
+  const item = await res.json();
+  return item;
 }
 
 /**
@@ -111,6 +142,36 @@ function getFilterMinMaxFunction (dataColumn, idMin, idMax) {
   }
 }
 
+/**
+ * @name parseApiGraphData
+ * @brief Formats data from RSBuddy API for use in Dygraphs
+ * @param itemData RSBuddy API detailed time series data
+ * @return Object of the form {labes, values}
+ * TODO: Also include quantity data
+ */
+function parseApiGraphData(itemData) {
+  const zeroToNull = x =>  x ? x : null;
+  const labels = ['Time', 'Buy Price', 'Sell Price'];
+  const values = itemData.map(x => [new Date(x.ts), zeroToNull(x.buyingPrice), zeroToNull(x.sellingPrice)]);
+  return {labels, values};
+}
+
+/**
+ * @name selectItem
+ * @brief Opens detailed view of item with id
+ * @param id ID of item
+ * @param name Name of item
+ */
+async function selectItem(id) {
+  if (!items) return; // Just to be safe
+  document.querySelector('#detail-title').textContent = items[id].name;
+
+  // Get time data for the last day and graph it
+  const itemData = await getGraphData(id, 60*24, 30);
+  const graphData = parseApiGraphData(itemData);
+  graph = new Dygraph(document.querySelector('#detail-graph'), graphData.values, {labels: graphData.labels});
+}
+
 window.onload = async function(){
   // DataTable initialization
   // TODO: Abstract this out elsewhere
@@ -124,6 +185,5 @@ window.onload = async function(){
 
   // Get items and populate tables
   items = await getAllItems();
-  console.log(items);
   render();
 };
