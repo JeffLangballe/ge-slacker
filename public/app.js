@@ -169,7 +169,16 @@ async function selectItem(id) {
   // Get time data for the last day and graph it
   const itemData = await getGraphData(id, 60*24, 30);
   const graphData = parseApiGraphData(itemData);
-  graph = new Dygraph(document.querySelector('#detail-graph'), graphData.values, {labels: graphData.labels});
+  graph = new Dygraph(
+    document.querySelector('#detail-graph'),
+    graphData.values,
+    {
+      labels: graphData.labels,
+      strokeWidth: 1.5,
+      drawPoints: true,
+      pointSize: 2.5,
+      highlightCircleSize: 3.5
+    });
 }
 
 window.onload = async function(){
