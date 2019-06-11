@@ -162,7 +162,8 @@ async function createDataTable() {
   // Create table
   table = tableElement.DataTable({
     data: tableData,
-    columns: columns
+    columns: columns,
+    pageLength: 25
   });
 
   // Register click handlers
