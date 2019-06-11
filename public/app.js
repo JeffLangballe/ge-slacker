@@ -166,7 +166,7 @@ async function createDataTable() {
   });
 
   // Register click handlers
-  tableElement.on('click', 'tr', function () {
+  tableElement.on('click', 'tbody tr', function () {
     let data = table.row(this).data();
     selectItem(data[0]);  // id
 } );
