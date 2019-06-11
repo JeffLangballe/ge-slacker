@@ -133,14 +133,14 @@ async function createDataTable() {
   if (!items) items = await getAllItems();
 
   // Format items for table
-  const tableHeaders = [
+  const columns = [
     { title: "id" },
     { title: "Name" },
     { title: "Average Price" },
     { title: "Buy Price" },
     { title: "Sell Price" },
     { title: "Margin" },
-    { title: "ROI" },
+    { title: "ROI", render: { _: 'display', data: 'value' } },
     { title: "Buy Quantity" },
     { title: "Sell Quantity" },
     { title: "Overall Quantity" }
@@ -153,7 +153,7 @@ async function createDataTable() {
     item.buy_average.toLocaleString(),
     item.sell_average.toLocaleString(),
     margin(item).toLocaleString(),
-    ROI(item).toFixed(1),
+    { value: ROI(item), display: ROI(item).toFixed(1) },
     item.buy_quantity.toLocaleString(),
     item.sell_quantity.toLocaleString(),
     item.overall_quantity.toLocaleString()
@@ -162,7 +162,7 @@ async function createDataTable() {
   // Create table
   table = tableElement.DataTable({
     data: tableData,
-    columns: tableHeaders
+    columns: columns
   });
 
   // Register click handlers
