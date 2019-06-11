@@ -81,46 +81,6 @@ function ROI(item) {
 }
 
 /**
- * @name template
- * @brief Generates html string for displaying items in table
- * @return Table html string
- */
-function template() {
-  if (!items) return '';
-  let itemToEntry = item => `
-  <tr onclick="selectItem(${item.id});">
-    <td>${item.id}</td>
-    <td>${item.name}</td>
-    <td>${item.overall_average}</td>
-    <td>${item.buy_average}</td>
-    <td>${item.sell_average}</td>
-    <td>${margin(item)}</td>
-    <td>${ROI(item).toFixed(1)}</td>
-    <td>${item.buy_quantity}</td>
-    <td>${item.sell_quantity}</td>
-    <td>${item.overall_quantity}</td>
-  </tr>`;
-
-  return Object.values(items).map(itemToEntry).join('');
-}
-
-/**
- * @name render
- * @brief Populates table with item price data
- * 
- * TODO: Use DataTable methods to update the table instead of recreating it
- *       from scratch every time
- */
-function render() {
-	let list = document.querySelector('#items-table-content');
-	if (!list) return;
-  list.innerHTML = template();
-
-  // Use DataTable to handle row sorting and searching
-  table = $('#items-table').DataTable();
-}
-
-/**
  * @name getFilterMinMaxFunction
  * @brief Generates a function to filter table using a min/max value
  * @param dataColumn Column index (in table) of data to filter
@@ -159,6 +119,57 @@ function parseApiGraphData(itemData) {
   const labels = ['Time', 'Buy Price', 'Sell Price'];
   const values = itemData.map(x => [new Date(x.ts), zeroToNull(x.buyingPrice), zeroToNull(x.sellingPrice)]);
   return {labels, values};
+}
+
+/**
+ * @name createDataTable
+ * @brief Creates DataTable using summary data from RSBuddy API
+ */
+async function createDataTable() {
+  let tableElement = $('#items-table');
+  if (!tableElement) return;
+
+  // Ensure we have data to use
+  if (!items) items = await getAllItems();
+
+  // Format items for table
+  const tableHeaders = [
+    { title: "id" },
+    { title: "Name" },
+    { title: "Average Price" },
+    { title: "Buy Price" },
+    { title: "Sell Price" },
+    { title: "Margin" },
+    { title: "ROI" },
+    { title: "Buy Quantity" },
+    { title: "Sell Quantity" },
+    { title: "Overall Quantity" }
+  ];
+
+  let tableData = Object.values(items).map(item => [
+    item.id,
+    item.name,
+    item.overall_average.toLocaleString(),
+    item.buy_average.toLocaleString(),
+    item.sell_average.toLocaleString(),
+    margin(item).toLocaleString(),
+    ROI(item).toFixed(1),
+    item.buy_quantity.toLocaleString(),
+    item.sell_quantity.toLocaleString(),
+    item.overall_quantity.toLocaleString()
+  ]);
+
+  // Create table
+  table = tableElement.DataTable({
+    data: tableData,
+    columns: tableHeaders
+  });
+
+  // Register click handlers
+  tableElement.on('click', 'tr', function () {
+    let data = table.row(this).data();
+    selectItem(data[0]);  // id
+} );
 }
 
 /**
@@ -215,5 +226,5 @@ window.onload = async function(){
 
   // Get items and populate tables
   items = await getAllItems();
-  render();
+  createDataTable();
 };
