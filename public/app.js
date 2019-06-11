@@ -3,8 +3,12 @@ const baseUrl = `${window.location.origin}/base`;
 const summaryUrl = `${baseUrl}/exchange/summary.json`;
 const graphUrl = `${apiUrl}/grandExchange`;
 const graphUrlAlt = `${baseUrl}/exchange/graphs`;
+let graphRange = {
+  range: 60 * 24, // 1 day of data points
+  interval: 30    // 30 minutes between each data point
+}
 let items = null;
-let selectedItem = null;
+let selectedItemId = null;
 let table = null;
 let graph = null;
 
@@ -34,7 +38,7 @@ async function getAllItems() {
  * @name getGraphData
  * @brief Gets detailed price data over time for a specified item
  * @param id  Item id 
- * @param period Fetch data from this many minutes ago until current time
+ * @param range Fetch data from this many minutes ago until current time
  * @param interval Interval between timestamps in minutes
  * @return List of price data for different times
  * Each object in the list is of the form:
@@ -46,8 +50,8 @@ async function getAllItems() {
  * sellingQuantity: 483085
  * ts: 1560011400000
  */
-async function getGraphData(id, period, interval) {
-  let res = await fetch(`${graphUrl}/?a=graph&i=${id}&g=${period}`);
+async function getGraphData(id, range, interval) {
+  let res = await fetch(`${graphUrl}/?a=graph&i=${id}&g=${range}`);
 
   // Fallback API
   if (!res.ok) res = await fetch(`${graphUrlAlt}/${interval}/${id}.json`);
@@ -146,7 +150,7 @@ function getFilterMinMaxFunction (dataColumn, idMin, idMax) {
  * @name parseApiGraphData
  * @brief Formats data from RSBuddy API for use in Dygraphs
  * @param itemData RSBuddy API detailed time series data
- * @return Object of the form {labes, values}
+ * @return Object of the form {labels, values}
  * TODO: Also include quantity data
  */
 function parseApiGraphData(itemData) {
@@ -160,14 +164,15 @@ function parseApiGraphData(itemData) {
  * @name selectItem
  * @brief Opens detailed view of item with id
  * @param id ID of item
- * @param name Name of item
+ * 30 180 1440 4320 17280
  */
 async function selectItem(id) {
-  if (!items) return; // Just to be safe
+  if (!items || !id) return;
+  selectedItemId = id;
   document.querySelector('#detail-title').textContent = items[id].name;
 
   // Get time data for the last day and graph it
-  const itemData = await getGraphData(id, 60*24, 30);
+  const itemData = await getGraphData(id, graphRange.range, graphRange.interval);
   const graphData = parseApiGraphData(itemData);
   graph = new Dygraph(
     document.querySelector('#detail-graph'),
@@ -179,6 +184,21 @@ async function selectItem(id) {
       pointSize: 2.5,
       highlightCircleSize: 3.5
     });
+}
+
+/**
+ * @name setGraphRange
+ * @param range Fetch data from this many minutes ago until current time
+ * @param interval Interval between timestamps in minutes
+ * TODO: Have visual feedback for what range is selected and if we're loading
+ */
+function setGraphRange(range, interval) {
+  if (!range || !interval) return;
+  graphRange.range = range;
+  graphRange.interval = interval;
+  if (selectedItemId) {
+    selectItem(selectedItemId);
+  }
 }
 
 window.onload = async function(){
