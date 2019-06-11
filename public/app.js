@@ -134,7 +134,7 @@ async function createDataTable() {
 
   // Format items for table
   const columns = [
-    { title: "id" },
+    { title: "", render: { _: 'image', data: 'id' }, searchable: false, orderable: false },
     { title: "Name" },
     { title: "Average Price" },
     { title: "Buy Price" },
@@ -147,7 +147,7 @@ async function createDataTable() {
   ];
 
   let tableData = Object.values(items).map(item => [
-    item.id,
+    { id: item.id, image: `<img src="https://www.osrsbox.com/osrsbox-db/items-icons/${item.id}.png" alt="$item.id">` },
     item.name,
     item.overall_average.toLocaleString(),
     item.buy_average.toLocaleString(),
@@ -166,9 +166,11 @@ async function createDataTable() {
   });
 
   // Register click handlers
+  // TODO: This depends on the format of the data in the row which is not
+  // a very robust implementation
   tableElement.on('click', 'tbody tr', function () {
     let data = table.row(this).data();
-    selectItem(data[0]);  // id
+    selectItem(data[0].id);
 } );
 }
 
