@@ -65,6 +65,7 @@ async function getGraphData(id, range, interval) {
  * @return Price margin of item
  */
 function margin(item) {
+  if (!item || !item.buy_average || !item.sell_average) return 0;
   return item.buy_average - item.sell_average;
 }
 
