@@ -200,7 +200,13 @@ async function selectItem(id) {
       drawPoints: true,
       pointSize: 2.5,
       highlightCircleSize: 3.5,
-      logscale: true
+      logscale: true,
+      labelsKMB: true,
+      axes: {
+        y: {
+          valueFormatter: x => x.toLocaleString()
+        }
+      }
     });
 }
 
