@@ -183,6 +183,8 @@ async function createDataTable() {
  */
 async function selectItem(id) {
   if (!items || !id) return;
+  let graphElement = document.querySelector('#detail-graph');
+  graphElement.innerHTML = 'Loading...';  // TODO: This could be prettier
   selectedItemId = id;
   document.querySelector('#detail-title').textContent = items[id].name;
 
@@ -190,7 +192,7 @@ async function selectItem(id) {
   const itemData = await getGraphData(id, graphRange.range, graphRange.interval);
   const graphData = parseApiGraphData(itemData);
   graph = new Dygraph(
-    document.querySelector('#detail-graph'),
+    graphElement,
     graphData.values,
     {
       labels: graphData.labels,
