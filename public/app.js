@@ -197,7 +197,8 @@ async function selectItem(id) {
       strokeWidth: 1.5,
       drawPoints: true,
       pointSize: 2.5,
-      highlightCircleSize: 3.5
+      highlightCircleSize: 3.5,
+      logscale: true
     });
 }
 
