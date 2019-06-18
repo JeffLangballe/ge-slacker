@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import ReactTable from 'react-table'
+import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
 
 
 // TODO: Move these functions somewhere else maybe
@@ -30,7 +31,8 @@ function ItemsTable({ items }) {
   const columns = [
     {
       Header: 'id',
-      accessor: 'id'
+      accessor: 'id',
+      Cell: props => <Link to={"/item/"+ props.value}>{props.value}</Link>
     },
     {
       Header: 'Name',

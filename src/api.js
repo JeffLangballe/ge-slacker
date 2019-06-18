@@ -42,13 +42,21 @@ async function GetAllItems() {
  * sellingPrice: 159
  * sellingQuantity: 483085
  * ts: 1560011400000
+ * TODO: Clean this up a bit. Fallback is getting pretty hairy
  */
 async function GetGraphData(id, range, interval) {
-  let res = await fetch(`${graphUrl}/?a=graph&i=${id}&g=${range}`);
+  let res;
 
-  // Fallback API
-  if (!res.ok) res = await fetch(`${graphUrlAlt}/${interval}/${id}.json`);
+  async function fallback() {
+    res = await fetch(`${graphUrlAlt}/${interval}/${id}.json`);
+  }
 
+  try {
+    res = await fetch(`${graphUrl}/?a=graph&i=${id}&g=${range}`);
+  } catch (e) {
+    await fallback();
+  }
+  if (!res.ok) await fallback();
   const item = await res.json();
   return item;
 }

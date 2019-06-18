@@ -9,8 +9,8 @@ import {GetAllItems} from './api';
 function App() {
   return (
     <Router>
-      <div>
-        <Header />
+      <Header />
+      <div className="container">
 
         <Switch>
           <Route exact path="/" component={Home} />
@@ -45,9 +45,6 @@ function Header() {
     <ul>
       <li>
         <Link to="/">Home</Link>
-      </li>
-      <li>
-        <Link to="/item/123">Item #123</Link>
       </li>
     </ul>
   );

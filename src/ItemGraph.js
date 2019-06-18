@@ -1,7 +1,59 @@
-import React from 'react';
+import React, {useRef, useEffect} from 'react';
+import Dygraph from 'dygraphs';
+import {GetGraphData} from './api';
 
-function ItemGraph({id}) {
-  return <h3>Graph of {id}</h3>;
+/**
+ * @name parseApiGraphData
+ * @brief Formats data from RSBuddy API for use in Dygraphs
+ * @param itemData RSBuddy API detailed time series data
+ * @return Object of the form {labels, values}
+ * TODO: Also include quantity data
+ */
+function parseApiGraphData(itemData) {
+  const zeroToNull = x =>  x ? x : null;
+  const labels = ['Time', 'Buy Price', 'Sell Price'];
+  const values = itemData.map(x => [new Date(x.ts), zeroToNull(x.buyingPrice), zeroToNull(x.sellingPrice)]);
+  return {labels, values};
+}
+
+function ItemGraph({itemId}) {
+  const graphEl = useRef(null);
+  const graphStyle = {
+    width: '100%'
+  };
+  let graphData = null;
+  let graph = null;
+
+  useEffect(() => {
+    const loadItemData = async () => {
+      let itemData = await GetGraphData(itemId, 60*24, 30); //  TODO: Don't hard-code these
+      graphData = parseApiGraphData(itemData);
+      graph = new Dygraph(
+        graphEl.current,
+        graphData.values,
+        {
+          labels: graphData.labels,
+          strokeWidth: 1.5,
+          drawPoints: true,
+          pointSize: 2.5,
+          highlightCircleSize: 3.5,
+          logscale: true,
+          labelsKMB: true,
+          axes: {
+            y: {
+              valueFormatter: x => x.toLocaleString()
+            }
+          }
+        });
+    }
+    loadItemData();
+  }, []);
+
+  return(
+    <div>
+      <div ref={graphEl} style={graphStyle}></div>
+    </div>
+  );
 }
 
 export default ItemGraph;
