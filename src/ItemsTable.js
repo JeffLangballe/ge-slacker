@@ -36,7 +36,8 @@ function ItemsTable({ items }) {
     },
     {
       Header: 'Name',
-      accessor: 'name'
+      accessor: 'name',
+      Cell: props => <Link to={"/item/"+ props.row.id}>{props.value}</Link>
     },
     {
       Header: 'Average Price',
