@@ -71,13 +71,10 @@ function ItemsTable({ items }) {
   ];
 
   return (
-    <div>
-      <h2>TABLE</h2>
-      <ReactTable
-        data={Object.values(items)}
-        columns={columns}
-      />
-    </div>
+    <ReactTable
+      data={Object.values(items)}
+      columns={columns}
+    />
   )
 }
 

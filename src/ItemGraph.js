@@ -16,6 +16,8 @@ function parseApiGraphData(itemData) {
   return {labels, values};
 }
 
+// TODO: This component shouldn't be getting the data itself but should
+// instead be provided with the data in the right format
 function ItemGraph({itemId}) {
   const graphEl = useRef(null);
   const graphStyle = {
@@ -50,9 +52,7 @@ function ItemGraph({itemId}) {
   }, []);
 
   return(
-    <div>
-      <div ref={graphEl} style={graphStyle}></div>
-    </div>
+    <div ref={graphEl} style={graphStyle}></div>
   );
 }
 
