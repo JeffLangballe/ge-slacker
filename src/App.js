@@ -1,42 +1,40 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import 'react-table/react-table.css'
 import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
 import ItemsTable from './ItemsTable';
 import Item from './Item';
 import NotFound from './NotFound';
-import {GetAllItems} from './api';
+import {ItemsContext, ItemsProvider} from './api';
 
 function App() {
   return (
     <Router>
-      <Header />
-      <div className="container">
+      <ItemsProvider>
+        <Header />
+        <div className="container">
 
-        <Switch>
-          <Route exact path="/" component={Home} />
-          <Route path="/item/:id" component={Item} />
-          <Route component={NotFound}/>
-        </Switch>
+          <Switch>
+            <Route exact path="/" component={Home} />
+            <Route path="/item/:id" component={Item} />
+            <Route component={NotFound}/>
+          </Switch>
 
-      </div>
+        </div> 
+      </ItemsProvider>
     </Router>
   );
 }
 
 function Home() {
-  const [items, setItems] = useState({});
-  useEffect(() => {
-    const loadItems = async () => {
-      setItems(await GetAllItems());
-    }
-    loadItems();
-  }, []);
-
   return (
-    <div>
-      <h2>GE Slacker</h2>
-      <ItemsTable items={items}></ItemsTable>
-    </div>
+    <ItemsContext.Consumer>
+      {({items}) => (
+        <React.Fragment>
+          <h2>GE Slacker</h2>
+          <ItemsTable items={items}></ItemsTable>
+        </React.Fragment>
+      )}
+    </ItemsContext.Consumer>
   );
 }
 

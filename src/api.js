@@ -1,3 +1,5 @@
+import React, {useState, useEffect} from 'react';
+
 const url = "http://" + window.location.hostname;
 const apiUrl = `${url}/api`;
 const baseUrl = `${url}/base`;
@@ -61,6 +63,36 @@ async function GetGraphData(id, range, interval) {
   return item;
 }
 
+const ItemsContext = React.createContext();
+
+function ItemsProvider({children}) {
+  const [items, setItems] = useState({});
+  useEffect(() => {
+    const loadItems = async () => {
+      setItems(await GetAllItems());
+    }
+    loadItems();
+  }, []);
+
+  /**
+   * @name getItemProperty
+   * @brief Safely gets nested property of item
+   * @param properties List of nested properties to evaluate
+   */
+  function getItemProperty(...properties) {
+    return properties.reduce((obj, key) => 
+      (obj && obj[key] !== 'undefined') ? obj[key] : undefined,
+    items
+    )
+  }
+
+  return (
+    <ItemsContext.Provider value={{items, getItemProperty}}>
+      {children}
+    </ItemsContext.Provider>
+  );
+}
+
 module.exports = {
-  GetGraphData, GetAllItems
+  GetGraphData, GetAllItems, ItemsContext, ItemsProvider
 }

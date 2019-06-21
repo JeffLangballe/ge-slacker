@@ -1,14 +1,18 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import ItemGraph from './ItemGraph';
+import {ItemsContext} from './api';
 
 function Item({ match }) {
-  // TODO: Need to get the item summary data using id only
   return (
-    <div>
-      <h2>Item Detail for id: {match.params.id}</h2>
-      <ItemGraph itemId={match.params.id}></ItemGraph>
-    </div>
+    <ItemsContext.Consumer>
+      {({getItemProperty}) => (
+        <React.Fragment>
+          <h2>{getItemProperty(match.params.id, 'name')}</h2>
+          <ItemGraph itemId={match.params.id}></ItemGraph>
+        </React.Fragment>
+      )}
+    </ItemsContext.Consumer>
   )
 }
 
