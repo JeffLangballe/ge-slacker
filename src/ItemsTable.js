@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import ReactTable from 'react-table'
 import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
 
@@ -24,59 +24,63 @@ function ROI(item) {
   return roi;
 }
 
+class ItemsTable extends React.Component {
+  constructor(props) {
+    super(props);
+  }
 
-function ItemsTable({ items }) {
-  if (!items) items = {};
-
-  const columns = [
-    {
-      Header: 'id',
-      accessor: 'id',
-      Cell: props => <Link to={"/item/"+ props.value}>{props.value}</Link>
-    },
-    {
-      Header: 'Name',
-      accessor: 'name',
-      Cell: props => <Link to={"/item/"+ props.row.id}>{props.value}</Link>
-    },
-    {
-      Header: 'Average Price',
-      accessor: 'overall_average'
-    },
-    {
-      Header: 'Buy Price',
-      accessor: 'buy_average'
-    },
-    {
-      Header: 'Sell Price',
-      accessor: 'sell_average'
-    },
-    {
-      Header: 'Margin',
-      id: 'margin',
-      accessor: item => margin(item)
-    },
-    {
-      Header: 'ROI',
-      id: 'roi',
-      accessor: item => ROI(item)
-    },
-    {
-      Header: 'Buy Quantity',
-      accessor: 'buy_quantity'
-    },
-    {
-      Header: 'Sell Quantity',
-      accessor: 'sell_quantity'
-    },
-  ];
-
-  return (
-    <ReactTable
-      data={Object.values(items)}
-      columns={columns}
-    />
-  )
+  render() {
+    const columns = [
+      {
+        Header: 'id',
+        accessor: 'id',
+        Cell: props => <Link to={"/item/"+ props.value}>{props.value}</Link>
+      },
+      {
+        Header: 'Name',
+        accessor: 'name',
+        Cell: props => <Link to={"/item/"+ props.row.id}>{props.value}</Link>
+      },
+      {
+        Header: 'Average Price',
+        accessor: 'overall_average'
+      },
+      {
+        Header: 'Buy Price',
+        accessor: 'buy_average'
+      },
+      {
+        Header: 'Sell Price',
+        accessor: 'sell_average'
+      },
+      {
+        Header: 'Margin',
+        id: 'margin',
+        accessor: item => margin(item)
+      },
+      {
+        Header: 'ROI',
+        id: 'roi',
+        accessor: item => ROI(item)
+      },
+      {
+        Header: 'Buy Quantity',
+        accessor: 'buy_quantity'
+      },
+      {
+        Header: 'Sell Quantity',
+        accessor: 'sell_quantity'
+      },
+    ];
+    return (
+      <React.Fragment>
+        <ReactTable
+          data={Object.values(this.props.items)}
+          columns={columns}
+        />
+      </React.Fragment>
+    )
+  }
 }
 
 export default ItemsTable;
