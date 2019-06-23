@@ -27,6 +27,39 @@ function ROI(item) {
 class ItemsTable extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      searchString: ''
+    }
+  }
+
+  /**
+   * @name updateSearchString
+   * @param event Event object from React
+   * @brief Event handler for search string update
+   */
+  updateSearchString(event) {
+    this.setState({
+      searchString: event.target.value
+    });
+  }
+
+  /**
+   * @name filterName
+   * @param item Item to check
+   * @brief Filters items based on search string
+   * @return true if item name contains search string
+   */
+  filterName(item) {
+    if (!item || !item.name) return true;
+    return item.name.toLowerCase().includes(this.state.searchString.toLowerCase());
+  }
+
+  /**
+   * @name getItems
+   * @return Filtered items to display in table
+   */
+  getItems() {
+    return Object.values(this.props.items).filter(x => this.filterName(x));
   }
 
   render() {
@@ -74,8 +107,17 @@ class ItemsTable extends React.Component {
     ];
     return (
       <React.Fragment>
+        <div className="input-group mb-2 w-25">
+          <input
+            value={this.state.searchString}
+            onChange={event => this.updateSearchString(event)}
+            type="text"
+            className={"form-control"}
+            placeholder="Search"
+          />
+        </div>
         <ReactTable
-          data={Object.values(this.props.items)}
+          data={this.getItems()}
           columns={columns}
         />
       </React.Fragment>
