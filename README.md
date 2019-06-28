@@ -3,6 +3,8 @@ Grand Exchange helper for OSRS
 
 Aims to replicate most of the key features from ge-tracker.com using the RSBuddy API and official API
 
+Uses NGINX to avoid CORS issues from RSBuddy API
+
 ## TODO
 - Front page dashboard (favourites, recommendations, graphs)
 - High volume item page with recommendations
@@ -16,12 +18,19 @@ Aims to replicate most of the key features from ge-tracker.com using the RSBuddy
 - Alerts for prices
 - Proper backend (Firebase?)
 
+## How to use
+- Make sure NodeJS and NGINX are installed
+- Clone the repo and copy nginx-config to `/etc/nginx/sites-enabled/ge-slacker`
+- Start nginx with `sudo service nginx start`
+- Start dev server with `npm start`
+
 ### This project uses
 - RSBuddy API
 - OSRS-DB
-- Dygraphs
-- React Tables
+- NGINX
 - React (using nano react app)
+- React Tables
+- Dygraphs
 - Bootstrap (using react-bootstrap)
 
 ## nano-react-app-template
