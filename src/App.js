@@ -11,8 +11,8 @@ function App() {
     <Router>
       <ItemsProvider>
         <div className="container-fluid">
-          <div className="row">
-            <div className="col-md-2 d-none d-md-block bg-light sidebar vh-100">
+          <div className="row" style={{height: '100%'}}>
+            <div className="col-md-2 d-none d-md-block bg-light sidebar">
               <SideBar/>
             </div>
             <main className="col-md-9 mt-3">

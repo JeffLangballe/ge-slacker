@@ -65,9 +65,9 @@ class ItemsTable extends React.Component {
   render() {
     const columns = [
       {
-        Header: 'id',
+        Header: '',
         accessor: 'id',
-        Cell: props => <Link to={"/item/"+ props.value}>{props.value}</Link>
+        Cell: props => <Link to={"/item/"+ props.value}><img src={`https://www.osrsbox.com/osrsbox-db/items-icons/${props.value}.png`} alt={props.value}/></Link>
       },
       {
         Header: 'Name',
