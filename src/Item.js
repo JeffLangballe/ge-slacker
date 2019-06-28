@@ -65,7 +65,7 @@ class Item extends React.Component {
       <ItemsContext.Consumer>
         {({getItemProperty}) => (
           <React.Fragment>
-            <h2>{getItemProperty(this.props.match.params.id, 'name')}</h2>
+            <h2><img src={`https://www.osrsbox.com/osrsbox-db/items-icons/${this.props.match.params.id}.png`} alt={this.props.match.params.id}/>{getItemProperty(this.props.match.params.id, 'name')}</h2>
             <div className="btn-group mb-1" role="group">
               <button type="button" className="btn btn-secondary" onClick={x => this.setGraphRange(60*24*365, 17280)}>Year</button>
               <button type="button" className="btn btn-secondary" onClick={x => this.setGraphRange(60*24*92, 4320)}>Quarter</button>
