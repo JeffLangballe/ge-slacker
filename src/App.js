@@ -10,16 +10,20 @@ function App() {
   return (
     <Router>
       <ItemsProvider>
-        <Header />
-        <div className="container">
-
-          <Switch>
-            <Route exact path="/" component={Home} />
-            <Route path="/item/:id" component={Item} />
-            <Route component={NotFound}/>
-          </Switch>
-
-        </div> 
+        <div className="container-fluid">
+          <div className="row">
+            <div className="col-md-2 d-none d-md-block bg-light sidebar vh-100">
+              <SideBar/>
+            </div>
+            <main className="col-md-9 mt-3">
+              <Switch>
+                <Route exact path="/" component={Home} />
+                <Route path="/item/:id" component={Item} />
+                <Route component={NotFound}/>
+              </Switch>
+            </main>
+          </div>
+        </div>
       </ItemsProvider>
     </Router>
   );
@@ -30,7 +34,6 @@ function Home() {
     <ItemsContext.Consumer>
       {({items}) => (
         <React.Fragment>
-          <h2>GE Slacker</h2>
           <ItemsTable items={items}></ItemsTable>
         </React.Fragment>
       )}
@@ -38,13 +41,18 @@ function Home() {
   );
 }
 
-function Header() {
+function SideBar() {
   return (
-    <ul>
-      <li>
-        <Link to="/">Home</Link>
-      </li>
-    </ul>
+    <nav>
+      <div className="sidebar-sticky">
+        <h2>GE Slacker</h2>
+        <ul className="nav flex-column">
+          <li className="nav-item">
+            <Link className="nav-link"  to="/">Home</Link>
+          </li>
+        </ul>
+      </div>
+    </nav>
   );
 }
 
