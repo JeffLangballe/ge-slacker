@@ -5,6 +5,10 @@ Aims to replicate most of the key features from ge-tracker.com using the RSBuddy
 
 Uses NGINX to avoid CORS issues from RSBuddy API
 
+## Features
+- Sortable, searchable table of all tradable items
+- Detailed price graphs for items with up to 30 minute resolution
+
 ## How to use
 - Make sure NodeJS and NGINX are installed
 - Clone the repo and copy nginx-config to `/etc/nginx/sites-enabled/ge-slacker`
@@ -41,22 +45,9 @@ Or edit the `start` script directly:
 parcel index.html -p 3000
 ```
 
-## Adding styles
-
-You can use CSS files with simple ES2015 `import` statements in your Javascript:
-
-```js
-import "./index.css";
-```
-
-## Babel transforms
-
-The Babel preset [babel-preset-nano-react-app](https://github.com/adrianmcli/babel-preset-nano-react-app) and a small amount of configuration is used to support the same transforms that Create React App supports.
-
-The Babel configuration lives inside `package.json` and will override an external `.babelrc` file, so if you want to use `.babelrc` remember to delete the `babel` property inside `package.json`.
-
 ## TODO
 - Front page dashboard (favourites, recommendations, graphs)
+- Custom filters
 - High volume item page with recommendations
 - Transformation (crafting) flip page
 - Icons everywhere
@@ -66,4 +57,4 @@ The Babel configuration lives inside `package.json` and will override an externa
 - Item sets flip page
 - High margin flip page
 - Alerts for prices
-- Proper backend (Firebase?)
+- Proper backend (Firebase?) for API caching
