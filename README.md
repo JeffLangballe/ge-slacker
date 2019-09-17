@@ -3,22 +3,27 @@ Grand Exchange helper for OSRS
 
 Aims to replicate most of the key features from ge-tracker.com using the RSBuddy API and official API
 
-Uses NGINX to avoid CORS issues from RSBuddy API
-
 ## Features
 - Sortable, searchable table of all tradable items
 - Detailed price graphs for items with up to 30 minute resolution
 
 ## How to use
-- Make sure NodeJS and NGINX are installed
-- Clone the repo and copy nginx-config to `/etc/nginx/sites-enabled/ge-slacker`
-- Start nginx with `sudo service nginx start`
+- Make sure NodeJS is installed
+- Setup proxy server using heroku and cors-anywhere
+  - `git clone https://github.com/Rob--W/cors-anywhere.git`
+  - `cd cors-anywhere/`
+  - `npm install`
+  - `heroku create`
+  - `git push heroku master`
+- Create src/CorsMirror.js with the following contents
+  - `export default "https://YOURHEROKUURL.herokuapp.com";`
 - Start dev server with `npm start`
 
 ## This project uses
 - RSBuddy API
 - OSRS-DB
-- NGINX
+- cors-anywhere
+- heroku
 - React (using nano react app)
 - React Tables
 - Dygraphs

@@ -1,8 +1,11 @@
 import React, {useState, useEffect} from 'react';
+import mirror from './CorsMirror';
 
-const url = "http://" + window.location.hostname;
-const apiUrl = `${url}/api`;
-const baseUrl = `${url}/base`;
+// CorsMirror.js contains the following
+// export default "https://YOURHEROKUURL.herokuapp.com";
+
+const apiUrl = `${mirror}/http://api.rsbuddy.com/`;
+const baseUrl = `${mirror}/http://rsbuddy.com/`;
 const summaryUrl = `${baseUrl}/exchange/summary.json`;
 const graphUrl = `${apiUrl}/grandExchange`;
 const graphUrlAlt = `${baseUrl}/exchange/graphs`;
