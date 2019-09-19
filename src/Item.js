@@ -10,6 +10,7 @@ class Item extends React.Component {
       range: 60*24,
       interval: 30,
       graphData: {},
+      itemData: {},
       showGraph: false
     }
   }
@@ -26,6 +27,7 @@ class Item extends React.Component {
     let itemData = await GetGraphData(this.props.match.params.id, this.state.range, this.state.interval);
     this.setState({
       graphData: this.parseApiGraphData(itemData),
+      itemData: itemData,
       showGraph: true
     });
   }
@@ -64,17 +66,77 @@ class Item extends React.Component {
     return (
       <ItemsContext.Consumer>
         {({getItemProperty}) => (
-          <React.Fragment>
-            <h2><img src={`https://www.osrsbox.com/osrsbox-db/items-icons/${this.props.match.params.id}.png`} alt={this.props.match.params.id}/>{getItemProperty(this.props.match.params.id, 'name')}</h2>
-            <div className="btn-group mb-1" role="group">
-              <button type="button" className="btn btn-secondary" onClick={x => this.setGraphRange(60*24*365, 17280)}>Year</button>
-              <button type="button" className="btn btn-secondary" onClick={x => this.setGraphRange(60*24*92, 4320)}>Quarter</button>
-              <button type="button" className="btn btn-secondary" onClick={x => this.setGraphRange(60*24*31, 1440)}>Month</button>
-              <button type="button" className="btn btn-secondary" onClick={x => this.setGraphRange(60*24*7, 180)}>Week</button>
-              <button type="button" className="btn btn-secondary" onClick={x => this.setGraphRange(60*24, 30)}>Day</button>
+          <div className="container">
+            <h1><img src={`https://www.osrsbox.com/osrsbox-db/items-icons/${this.props.match.params.id}.png`} alt={this.props.match.params.id}/>{getItemProperty(this.props.match.params.id, 'name')}</h1>
+            <div className="row">
+              <div className="col">
+                <div className="card">
+                  <div className="card-body">
+                    <ul className="list-group list-group-flush">
+                      <li className="list-group-item d-flex justify-content-between">
+                        <div>Average Price</div>
+                        <div>right text</div>
+                      </li>
+                      <li className="list-group-item d-flex justify-content-between">
+                        <div>Buy Price</div>
+                        <div>right text</div>
+                      </li>
+                      <li className="list-group-item d-flex justify-content-between">
+                        <div>Sell Price</div>
+                        <div>right text</div>
+                      </li>
+                      <li className="list-group-item d-flex justify-content-between">
+                        <div>Margin & ROI</div>
+                        <div>right text</div>
+                      </li>
+                      <li className="list-group-item d-flex justify-content-between">
+                        <div>High Alchemy Price</div>
+                        <div>right text</div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div className="col">
+                <div className="card">
+                  <div className="card-body">
+                    <ul className="list-group list-group-flush">
+                    <li className="list-group-item d-flex justify-content-between">
+                        <div>Buy Quantity</div>
+                        <div>right text</div>
+                      </li>
+                      <li className="list-group-item d-flex justify-content-between">
+                        <div>Sell Quantiy</div>
+                        <div>right text</div>
+                      </li>
+                      <li className="list-group-item d-flex justify-content-between">
+                        <div>Buy Limit</div>
+                        <div>right text</div>
+                      </li>
+                      <li className="list-group-item">
+                        Wiki link here
+                      </li>
+                      <li className="list-group-item">
+                        RSBuddy link here
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
             </div>
-            <ItemGraph graphData={this.state.graphData}/>
-          </React.Fragment>
+            <div className="row">
+              <div className="col">
+                <div className="btn-group mb-1 mt-1" role="group">
+                  <button type="button" className="btn btn-secondary" onClick={x => this.setGraphRange(60*24*365, 17280)}>Year</button>
+                  <button type="button" className="btn btn-secondary" onClick={x => this.setGraphRange(60*24*92, 4320)}>Quarter</button>
+                  <button type="button" className="btn btn-secondary" onClick={x => this.setGraphRange(60*24*31, 1440)}>Month</button>
+                  <button type="button" className="btn btn-secondary" onClick={x => this.setGraphRange(60*24*7, 180)}>Week</button>
+                  <button type="button" className="btn btn-secondary" onClick={x => this.setGraphRange(60*24, 30)}>Day</button>
+                </div>
+                <ItemGraph graphData={this.state.graphData}/>
+              </div>
+            </div>
+          </div>
         )}
       </ItemsContext.Consumer>
     );
